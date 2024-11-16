@@ -85,6 +85,42 @@
                         <input type="submit" class="btn-primary" name="send" value="Send Message">
                     </div>
                 </form>
+                <?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
+    // Retrieve and sanitize form inputs
+    $name = htmlspecialchars(trim($_POST['name']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $subject = htmlspecialchars(trim($_POST['subject']));
+    $message = htmlspecialchars(trim($_POST['message']));
+
+    // Basic validation
+    if (!empty($name) && !empty($email) && !empty($subject) && !empty($message)) {
+        // Optionally, you could add further validation here (e.g., filter_var for email validation)
+
+        // For demonstration, display the form data
+        echo "<h2>Form Submitted Successfully</h2>";
+        echo "<p><strong>Name:</strong> $name</p>";
+        echo "<p><strong>Email:</strong> $email</p>";
+        echo "<p><strong>Subject:</strong> $subject</p>";
+        echo "<p><strong>Message:</strong> $message</p>";
+
+        // Optionally, send the data via email
+        
+        $to = 'biratkiju@gmail.com'; // Replace with your email address
+        $headers = "From: $email\r\n";
+        $headers .= "Reply-To: $email\r\n";
+        $mailSent = mail($to, $subject, $message, $headers);
+        if ($mailSent) {
+            echo "<p>Email sent successfully.</p>";
+        } else {
+            echo "<p>Failed to send the email.</p>";
+        }
+    } else {
+        echo "<p>Please fill in all required fields.</p>";
+    }
+}
+?>
+
             </div>
             </div>
         </section>
